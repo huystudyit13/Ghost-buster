@@ -1,17 +1,23 @@
 # depslib dependency file v1.0
-1586166280 source:e:\jumpstudent\main.cpp
+1586337554 source:e:\jumpstudent\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
 	<string>
 	"BasicFuncs.h"
 
-1586176206 e:\jumpstudent\basicfuncs.h
+1586439001 e:\jumpstudent\basicfuncs.h
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
 
-1586176007 source:e:\jumpstudent\basicfuncs.cpp
+1586338011 source:e:\jumpstudent\basicfuncs.cpp
+	<iostream>
+	"BasicFuncs.h"
+
+1586337231 e:\jumpstudent\render.h
+
+1586439150 source:e:\jumpstudent\loadmedia.cpp
 	<iostream>
 	"BasicFuncs.h"
 

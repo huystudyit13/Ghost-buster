@@ -34,7 +34,9 @@
 		</Compiler>
 		<Unit filename="BasicFuncs.cpp" />
 		<Unit filename="BasicFuncs.h" />
+		<Unit filename="LoadMedia.cpp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="render.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

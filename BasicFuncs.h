@@ -9,10 +9,9 @@
 using namespace std;
 
 const int SCREEN_WIDTH = 500;
-const int SCREEN_HEIGHT = 700;
+const int SCREEN_HEIGHT = 800;
 
 
-//Starts up SDL and creates window
 bool init();
 
 //Loads media
@@ -23,12 +22,37 @@ void close();
 
 void loadImage();
 
-//Loads individual image as texture
-SDL_Texture* loadTexture( std::string path );
-
-
-
 
 void waitUntilKeyPressed();
 
+class LTexture
+{
+	public:
+		//Initializes variables
+		LTexture();
+
+		//Deallocates memory
+		~LTexture();
+
+		//Loads image at specified path
+		bool loadFromFile( std::string path );
+
+		//Deallocates texture
+		void free();
+
+		//Renders texture at given point
+		void render( int x, int y );
+
+		//Gets image dimensions
+		int getWidth();
+		int getHeight();
+
+	private:
+		//The actual hardware texture
+		SDL_Texture* mTexture;
+
+		//Image dimensions
+		int mWidth;
+		int mHeight;
+};
 #endif
