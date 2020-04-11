@@ -182,7 +182,7 @@ void loadImage()
 				gBackgroundTexture.render( 0, 0 );
 
 				//Render Foo' to the screen
-				gFooTexture.render( 250, 700 );
+				gFooTexture.render( 50, 500 );
 
 				//Update screen
 				SDL_RenderPresent( gRenderer );
