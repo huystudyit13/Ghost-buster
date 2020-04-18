@@ -1,7 +1,5 @@
 
-#include <iostream>
 #include "BasicFuncs.h"
-using namespace std;
 
 void waitUntilKeyPressed()
 {
@@ -10,7 +8,7 @@ void waitUntilKeyPressed()
         if ( SDL_WaitEvent(&e) != 0 &&
              (e.type == SDL_KEYDOWN || e.type == SDL_QUIT) )
             return;
-        SDL_Delay(1000);
+        SDL_Delay(100);
     }
 }
 

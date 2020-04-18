@@ -2,8 +2,9 @@
 #include "BasicFuncs.h"
 using namespace std;
 
-LTexture gFooTexture;
+LTexture gSpriteSheetTexture;
 LTexture gBackgroundTexture;
+SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
 
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -71,22 +72,28 @@ bool init()
 
 bool loadMedia()
 {
-	//Loading success flag
 	bool success = true;
 
-	//Load Foo' texture
-	if( !gFooTexture.loadFromFile( "sprite.png" ) )
+	if( !gSpriteSheetTexture.loadFromFile( "sprite.png" ) )
 	{
-		printf( "Failed to load Foo' texture image!\n" );
+		success = false;
+	}
+	else
+	{
+		//Set sprite clips
+		for(int i=0;i<WALKING_ANIMATION_FRAMES;i++){
+            gSpriteClips[ i ].x =   i*42;
+            gSpriteClips[ i ].y =  0;
+            gSpriteClips[ i ].w =   42;
+            gSpriteClips[ i ].h = 39;
+		}
+	}
+
+	if( !gBackgroundTexture.loadFromFile( "map1.png" ) )
+	{
 		success = false;
 	}
 
-	//Load background texture
-	if( !gBackgroundTexture.loadFromFile( "map1.png" ) )
-	{
-		printf( "Failed to load background texture image!\n" );
-		success = false;
-	}
 
 	return success;
 }
@@ -132,11 +139,27 @@ bool LTexture::loadFromFile( std::string path )
 	return mTexture != NULL;
 }
 
-void LTexture::render( int x, int y )
+void LTexture::render1( int x, int y )
 {
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
 	SDL_RenderCopy( gRenderer, mTexture, NULL, &renderQuad );
+}
+
+void LTexture::render( int x, int y, SDL_Rect* clip )
+{
+	//Set rendering space and render to screen
+	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
+
+	//Set clip rendering dimensions
+	if( clip != NULL )
+	{
+		renderQuad.w = clip->w;
+		renderQuad.h = clip->h;
+	}
+
+	//Render to screen
+	SDL_RenderCopy( gRenderer, mTexture, clip, &renderQuad );
 }
 
 void loadImage()
@@ -160,6 +183,8 @@ void loadImage()
 
 			//Event handler
 			SDL_Event e;
+			//Current animation frame
+			int frame = 0;
 
 			//While application is running
 			while( !quit )
@@ -179,13 +204,24 @@ void loadImage()
 				SDL_RenderClear( gRenderer );
 
 				//Render texture to screen
-				gBackgroundTexture.render( 0, 0 );
+				gBackgroundTexture.render1( 0, 0 );
 
-				//Render Foo' to the screen
-				gFooTexture.render( 50, 500 );
+				//Render current frame
+                SDL_Rect* currentClip = &gSpriteClips[ frame / 7 ];
+                SDL_Delay(10);
+                gSpriteSheetTexture.render( 240, 630, currentClip );
 
 				//Update screen
-				SDL_RenderPresent( gRenderer );
+                SDL_RenderPresent( gRenderer );
+
+				//Go to next frame
+                ++frame;
+
+				//Cycle animation
+				if( frame / 7 >= WALKING_ANIMATION_FRAMES )
+				{
+					frame = 0;
+				}
 			}
 		}
 	}
