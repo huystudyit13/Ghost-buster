@@ -1,18 +1,13 @@
 #include <iostream>
 #include "BasicFuncs.h"
+#include "Character.h"
 using namespace std;
 
-LTexture gSpriteSheetTexture;
 LTexture gBackgroundTexture;
-SDL_Rect gSpriteClips[ WALKING_ANIMATION_FRAMES ];
+Character player;
 
-//The window we'll be rendering to
-SDL_Window* gWindow = NULL;
-
-//The window renderer
 SDL_Renderer* gRenderer = NULL;
-
-//Current displayed texture
+SDL_Window* gWindow = NULL;
 SDL_Texture* gTexture = NULL;
 
 bool init()
@@ -73,40 +68,18 @@ bool init()
 bool loadMedia()
 {
 	bool success = true;
-
-	if( !gSpriteSheetTexture.loadFromFile( "sprite.png" ) )
+	if( !gBackgroundTexture.loadFromFile( "map1.PNG") )
 	{
 		success = false;
 	}
-	else
-	{
-		//Set sprite clips
-		for(int i=0;i<WALKING_ANIMATION_FRAMES;i++){
-            gSpriteClips[ i ].x =   i*42;
-            gSpriteClips[ i ].y =  0;
-            gSpriteClips[ i ].w =   42;
-            gSpriteClips[ i ].h = 39;
-		}
-	}
-
-	if( !gBackgroundTexture.loadFromFile( "map1.png" ) )
-	{
-		success = false;
-	}
-
-
 	return success;
 }
 
-bool LTexture::loadFromFile( std::string path )
+bool LTexture::loadFromFile( std::string path)
 {
-	//Get rid of preexisting texture
-	free();
-
 	//The final texture
 	SDL_Texture* newTexture = NULL;
-
-	//Load image at specified path
+    //Load image at specified path
 	SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
 	if( loadedSurface == NULL )
 	{
@@ -116,7 +89,6 @@ bool LTexture::loadFromFile( std::string path )
 	{
 		//Color key image
 		SDL_SetColorKey( loadedSurface, SDL_TRUE, SDL_MapRGB( loadedSurface->format, 0, 0xFF, 0xFF ) );
-
 		//Create texture from surface pixels
         newTexture = SDL_CreateTextureFromSurface( gRenderer, loadedSurface );
 		if( newTexture == NULL )
@@ -129,11 +101,9 @@ bool LTexture::loadFromFile( std::string path )
 			mWidth = loadedSurface->w;
 			mHeight = loadedSurface->h;
 		}
-
 		//Get rid of old loaded surface
 		SDL_FreeSurface( loadedSurface );
 	}
-
 	//Return success
 	mTexture = newTexture;
 	return mTexture != NULL;
@@ -146,21 +116,6 @@ void LTexture::render1( int x, int y )
 	SDL_RenderCopy( gRenderer, mTexture, NULL, &renderQuad );
 }
 
-void LTexture::render( int x, int y, SDL_Rect* clip )
-{
-	//Set rendering space and render to screen
-	SDL_Rect renderQuad = { x, y, mWidth, mHeight };
-
-	//Set clip rendering dimensions
-	if( clip != NULL )
-	{
-		renderQuad.w = clip->w;
-		renderQuad.h = clip->h;
-	}
-
-	//Render to screen
-	SDL_RenderCopy( gRenderer, mTexture, clip, &renderQuad );
-}
 
 void loadImage()
 {
@@ -180,11 +135,11 @@ void loadImage()
 		{
 			//Main loop flag
 			bool quit = false;
-
 			//Event handler
 			SDL_Event e;
-			//Current animation frame
-			int frame = 0;
+
+			player.load("sprite_right.PNG",gRenderer);
+			player.setSpriteClip();
 
 			//While application is running
 			while( !quit )
@@ -197,6 +152,7 @@ void loadImage()
 					{
 						quit = true;
 					}
+					player.action(e, gRenderer);
 				}
 
 				//Clear screen
@@ -205,28 +161,14 @@ void loadImage()
 
 				//Render texture to screen
 				gBackgroundTexture.render1( 0, 0 );
-
-				//Render current frame
-                SDL_Rect* currentClip = &gSpriteClips[ frame / 7 ];
-                SDL_Delay(10);
-                gSpriteSheetTexture.render( 240, 630, currentClip );
+				player.render(gRenderer);
 
 				//Update screen
                 SDL_RenderPresent( gRenderer );
-
-				//Go to next frame
-                ++frame;
-
-				//Cycle animation
-				if( frame / 7 >= WALKING_ANIMATION_FRAMES )
-				{
-					frame = 0;
-				}
 			}
 		}
 	}
 }
-
 void close()
 {
 	//Free loaded image

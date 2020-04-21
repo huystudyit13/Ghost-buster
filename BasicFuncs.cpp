@@ -38,15 +38,6 @@ LTexture::~LTexture()
 	free();
 }
 
-int LTexture::getWidth()
-{
-	return mWidth;
-}
-
-int LTexture::getHeight()
-{
-	return mHeight;
-}
 
 
 
