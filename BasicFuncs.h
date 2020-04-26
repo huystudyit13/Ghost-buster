@@ -52,8 +52,8 @@ struct LTexture
 struct Input{
     int left;
     int right;
-    int jump;
-    int ready_jump;
+    int up;
+    int down;
 
 };
 #endif

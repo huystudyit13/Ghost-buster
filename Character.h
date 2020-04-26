@@ -3,8 +3,6 @@
 
 #include "BasicFuncs.h"
 struct Character : LTexture{
-    float x_val;
-    float y_val;
 
     int x_pos;
     int y_pos;
@@ -30,8 +28,10 @@ struct Character : LTexture{
     void action(SDL_Event event , SDL_Renderer* gRenderer);
     void setSpriteClip();
     void free();
-
-
+    void moveleft();
+    void moveright();
+    void up();
+    void down();
 };
 
 
