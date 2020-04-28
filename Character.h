@@ -2,8 +2,7 @@
 #define CHARACTER__H
 
 #include "BasicFuncs.h"
-struct Character : LTexture{
-
+struct Character{
     int x_pos;
     int y_pos;
 
@@ -33,11 +32,5 @@ struct Character : LTexture{
     void up();
     void down();
 };
-
-
-
-
-
-
 
 #endif // CHARACTER__H

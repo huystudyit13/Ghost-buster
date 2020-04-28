@@ -11,7 +11,7 @@ Character::Character(){
     pTexture = NULL;
 }
 Character::~Character(){
-
+    free();
 };
 
 bool Character::load(std::string path,SDL_Renderer* gRenderer){
@@ -91,7 +91,6 @@ void Character::action(SDL_Event event , SDL_Renderer* gRenderer){
                 status = Right;
                 input.right=1;
                 input.left =0 ;
-
                 moveright();
             }
             break;

@@ -45,8 +45,7 @@ struct LTexture
 
 		//Renders texture at given point
 		void render1( int x, int y );
-
-
+        void botmove(int &x,int &y);
 };
 
 struct Input{
