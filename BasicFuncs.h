@@ -10,13 +10,8 @@ using namespace std;
 const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = 700;
 
-//Walking animation
-const int ANIMATION_FRAMES = 7;
-
-
 bool init();
 void loadImage();
-bool loadMedia();
 //Frees media and shuts down SDL
 void close();
 

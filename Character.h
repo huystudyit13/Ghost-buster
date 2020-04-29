@@ -2,6 +2,7 @@
 #define CHARACTER__H
 
 #include "BasicFuncs.h"
+const int ANIMATION_FRAMES = 7;
 struct Character{
     int x_pos;
     int y_pos;

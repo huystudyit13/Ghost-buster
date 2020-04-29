@@ -75,7 +75,7 @@ void Character::render(SDL_Renderer* gRenderer){
     if(frame>=3 || input.up==1 || input.down ==1) frame = 0 ;
 
     SDL_Rect* currentClip = &gSpriteClips[frame];
-    SDL_Delay(100);
+    SDL_Delay(10);
     SDL_Rect renderQuad = { x_pos, y_pos, w_frame, h_frame };
     if( currentClip != NULL){
         renderQuad.w = currentClip->w;

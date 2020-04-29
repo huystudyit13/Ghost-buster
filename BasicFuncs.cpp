@@ -68,19 +68,6 @@ bool init()
 	return success;
 }
 
-bool loadMedia()
-{
-	bool success = true;
-	if( !gBackgroundTexture.loadFromFile( "map1.PNG") )
-	{
-		success = false;
-	}if( !bot.loadFromFile( "ghost.PNG") )
-	{
-		success = false;
-	}
-	return success;
-}
-
 bool LTexture::loadFromFile( std::string path)
 {
 	//The final texture
@@ -140,6 +127,7 @@ void LTexture::botmove(int &x,int &y){
         y+=30;
         if(y>661) y=661;
     }
+    SDL_Delay(100);
 }
 void loadImage()
 {
@@ -153,18 +141,12 @@ void loadImage()
 	}
 	else
 	{
-		//Load media
-		if( !loadMedia() )
-		{
-			cout <<  "Failed to load media!\n" ;
-		}
-		else
-		{
 			//Main loop flag
 			bool quit = false;
 			//Event handler
 			SDL_Event e;
-
+            gBackgroundTexture.loadFromFile( "map1.PNG");
+            bot.loadFromFile( "ghost.PNG");
 			player.load("sprite_right.PNG",gRenderer);
 			player.setSpriteClip();
 
@@ -181,7 +163,7 @@ void loadImage()
 					}
 					player.action(e, gRenderer);
 				}
-
+                bot.botmove(x,y);
 				//Clear screen
 				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
 				SDL_RenderClear( gRenderer );
@@ -190,12 +172,10 @@ void loadImage()
 				gBackgroundTexture.render1( 0, 0 );
 				player.render(gRenderer);
 				bot.render1(x,y);
-				{bot.botmove(x,y);
-                SDL_Delay(50);}
+
 				//Update screen
                 SDL_RenderPresent( gRenderer );
 			}
-		}
 	}
 }
 void close()
