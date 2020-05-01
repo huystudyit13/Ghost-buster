@@ -10,13 +10,6 @@ using namespace std;
 const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = 700;
 
-bool init();
-void loadImage();
-//Frees media and shuts down SDL
-void close();
-
-void waitUntilKeyPressed();
-
 struct LTexture
 {
 	//The actual hardware texture
@@ -33,14 +26,13 @@ struct LTexture
 		~LTexture();
 
 		//Loads image at specified path
-		bool loadFromFile( std::string path);
+		bool loadFromFile( std::string path, SDL_Renderer* gRenderer);
 
 		//Deallocates texture
 		void free();
 
 		//Renders texture at given point
-		void render1( int x, int y );
-        void botmove(int &x,int &y);
+		void render1( int x, int y , SDL_Renderer* gRenderer);
 };
 
 struct Input{

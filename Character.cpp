@@ -75,7 +75,6 @@ void Character::render(SDL_Renderer* gRenderer){
     if(frame>=3 || input.up==1 || input.down ==1) frame = 0 ;
 
     SDL_Rect* currentClip = &gSpriteClips[frame];
-    SDL_Delay(10);
     SDL_Rect renderQuad = { x_pos, y_pos, w_frame, h_frame };
     if( currentClip != NULL){
         renderQuad.w = currentClip->w;
@@ -156,7 +155,6 @@ void Character::moveleft(){
     else if((x_pos>123&& x_pos<198) && ((y_pos<150 && y_pos>98) || (y_pos+h_frame<150 && y_pos+h_frame>98))) x_pos=198;
     else if(x_pos<82 && ((y_pos<150 && y_pos>77) || (y_pos+h_frame<150 && y_pos+h_frame>77))) x_pos=82;
     else if(x_pos<5) x_pos=5;
-    cout << x_pos << ' ' << y_pos << endl;
 }
 void Character::moveright(){
     x_pos +=20;
@@ -167,7 +165,6 @@ void Character::moveright(){
     else if((x_pos+w_frame>123 && x_pos+w_frame<198) && ((y_pos<150 && y_pos>98) || (y_pos+h_frame<150 && y_pos+h_frame>98))) x_pos=123-w_frame+10;
     else if(x_pos+w_frame>424 && ((y_pos<210 && y_pos>187) || (y_pos+h_frame<210 && y_pos+h_frame>187))) x_pos=424-w_frame+10;
     else if(x_pos>(500-w_frame)) x_pos=500-w_frame+7;
-    cout << x_pos << ' ' << y_pos << endl;
 }
 void Character::up(){
     y_pos -=20;
@@ -178,7 +175,6 @@ void Character::up(){
     else if((y_pos<150 && y_pos>77) && ((x_pos>5 && x_pos<81) ||(x_pos+w_frame<81 && x_pos+w_frame>5))) y_pos=150;
     else if((y_pos<210 && y_pos>187) && ((x_pos>441 && x_pos<495) ||(x_pos+w_frame<495 && x_pos+w_frame>441))) y_pos=210;
     else if(y_pos<0) y_pos=0;
-    cout << x_pos << ' ' << y_pos << endl;
 }
 void Character::down(){
     y_pos +=20;
@@ -191,5 +187,4 @@ void Character::down(){
     else if((y_pos+h_frame<150 && y_pos+h_frame>77) && ((x_pos>5 && x_pos<81) ||(x_pos+w_frame<81 && x_pos+w_frame>5))) y_pos=77-h_frame;
     else if((y_pos+h_frame<210 && y_pos+h_frame>187) && ((x_pos>441 && x_pos<495) ||(x_pos+w_frame<495 && x_pos+w_frame>441))) y_pos=187-h_frame;
     else if((y_pos+h_frame<310 && y_pos+h_frame>276) && ((x_pos>321 && x_pos<404) ||(x_pos+w_frame<404 && x_pos+w_frame>321))) y_pos=276-h_frame;
-    cout << x_pos << ' ' << y_pos << endl;
 }
