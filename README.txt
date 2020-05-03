@@ -8,3 +8,4 @@ Những việc đã làm được:
 4. Di chuyển lên, xuống và va chạm địa hình.
 5. Xuất hiện bot và tự động di chuyển.
 6. Va chạm giữa nhân vật và bot và bot bị tiêu diệt biến mất.
+7. Có thêm nhạc nền và kết thúc game.

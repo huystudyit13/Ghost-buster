@@ -59,7 +59,7 @@ void Bot::botmove(){
         y+=50;
         if(y>661) y=661;
     }
-    SDL_Delay(50);
+    SDL_Delay(20);
 }
 
 void Bot::free()

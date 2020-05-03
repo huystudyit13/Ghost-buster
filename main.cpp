@@ -4,13 +4,17 @@
 #include <string>
 #include <ctime>
 #include <vector>
+#include <SDL_mixer.h>
 #include "BasicFuncs.h"
 #include "Character.h"
 #include "Bot.h"
+#include "musicAndTtf.h"
 
-LTexture gBackgroundTexture;
+LTexture Background;
 Character player;
-vector<Bot> bot(7);
+Bot bot[5];
+LTexture defeat;
+LTexture victory;
 
 SDL_Renderer* gRenderer = NULL;
 SDL_Window* gWindow = NULL;
@@ -65,6 +69,11 @@ bool init()
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = false;
 				}
+				if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+				{
+					printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+					success = false;
+				}
 			}
 		}
 	}
@@ -86,6 +95,7 @@ void close()
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
+	Mix_Quit();
 }
 
 void waitUntilKeyPressed()
@@ -102,50 +112,50 @@ void waitUntilKeyPressed()
 int main(int argc, char* argv[])
 {
     srand(time(0));
-    //Start up SDL and create window
-	if( !init() )
-	{
-		cout << "Failed to initialize!\n" ;
-	}
-	else
-	{
-			//Main loop flag
-			bool quit = false;
-			//Event handler
-			SDL_Event e;
-            gBackgroundTexture.loadFromFile( "map1.PNG", gRenderer);
-			player.load("sprite_right.PNG",gRenderer);
-			player.setSpriteClip();
-            for(int i=0;i<7;i++) bot[i].loadBot("ghost.PNG", gRenderer);
-			//While application is running
-			while( !quit )
-			{
-				//Handle events on queue
-				while( SDL_PollEvent( &e ) != 0 )
-				{
-					//User requests quit
-					if( e.type == SDL_QUIT )
-					{
-						quit = true;
-					}
-					player.action(e, gRenderer);
+    init();
+    bool quit = false;
+    SDL_Event e;
+    Background.loadFromFile( "map1.PNG", gRenderer);
+    defeat.loadFromFile("defeat.PNG",gRenderer);
+    victory.loadFromFile("victory.PNG",gRenderer);
+    player.load("sprite_right.PNG",gRenderer);
+    player.setSpriteClip();
+    for(int i=0;i<5;i++) bot[i].loadBot("ghost.PNG", gRenderer);
+    int alive = 5;
+    backgrmusic();
+    while( !quit )
+    {
+        while( SDL_PollEvent( &e ) != 0 )
+            {
+                if( e.type == SDL_QUIT )
+                {
+                    quit = true;
+                }
+                player.action(e, gRenderer);
+            }
+        for(int i=0;i<5;i++){
+                if( bot[i].check(player) ) {
+                    bot[i].free();
+                    effectmusic();
+                    alive--;
+                }
+        }
+        for(int i=0;i<5;i++) bot[i].botmove();
+        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
+        SDL_RenderClear( gRenderer );
+        if(alive>0){
+            Background.render1( 0, 0 ,gRenderer);
+            player.render(gRenderer);
+            for(int i=0;i<5;i++) bot[i].renderBot(gRenderer);
+        }
+        else if (alive==0){
+            Background.render1( 0, 0 ,gRenderer);
+            //defeat.render1(50,128,gRenderer);
+            victory.render1(50,185,gRenderer);
+        }
+        SDL_RenderPresent( gRenderer );
 
-				}
-				for(int i=0;i<7;i++) if( bot[i].check(player) ) bot[i].free();
-				for(int i=0;i<7;i++) bot[i].botmove();
-				//Clear screen
-				SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-				SDL_RenderClear( gRenderer );
-
-				//Render texture to screen
-				gBackgroundTexture.render1( 0, 0 ,gRenderer);
-				player.render(gRenderer);
-                for(int i=0;i<7;i++) bot[i].renderBot(gRenderer);
-				//Update screen
-                SDL_RenderPresent( gRenderer );
-
-			}
-	}
+    }
 	waitUntilKeyPressed();
     close();
     return 0;
