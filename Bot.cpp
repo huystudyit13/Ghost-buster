@@ -44,19 +44,19 @@ void Bot::renderBot(SDL_Renderer* gRenderer)
 void Bot::botmove(){
     int n = rand() % 4 ;
     if(n==0){
-        x+=50;
+        x+=40;
         if(x>453) x=453;
     }
     else if(n==1){
-        x-=50;
+        x-=40;
         if(x<0) x=0;
     }
     else if(n==2){
-        y-=50;
+        y-=40;
         if(y<0) y=0;
     }
     else if(n==3){
-        y+=50;
+        y+=40;
         if(y>661) y=661;
     }
     SDL_Delay(20);

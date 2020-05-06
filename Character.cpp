@@ -54,9 +54,9 @@ bool Character::load(std::string path,SDL_Renderer* gRenderer){
 void Character::setSpriteClip(){
     if(w_frame > 0 && h_frame > 0){
         for(int i=0;i<ANIMATION_FRAMES;i++){
-            gSpriteClips[ i ].x =   i*w_frame;
-            gSpriteClips[ i ].y =  0;
-            gSpriteClips[ i ].w =  w_frame;
+            gSpriteClips[ i ].x = i*w_frame;
+            gSpriteClips[ i ].y = 0;
+            gSpriteClips[ i ].w = w_frame;
             gSpriteClips[ i ].h = h_frame;
 		}
     }
