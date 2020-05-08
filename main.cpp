@@ -11,13 +11,12 @@
 #include "Bot.h"
 #include "musicAndTtf.h"
 
-
 const int SCREEN_WIDTH = 500;
 const int SCREEN_HEIGHT = 700;
 LTexture Background;
-Character player;
 LTexture defeat;
 LTexture victory;
+LTexture openning;
 int numberOfbot = 5;
 SDL_Renderer* gRenderer = NULL;
 SDL_Window* gWindow = NULL;
@@ -119,71 +118,91 @@ int main(int argc, char* argv[])
 {
     srand(time(0));
     init();
-    Bot bot[numberOfbot];
-    bool quit = false;
     SDL_Event e;
-    Font font;
     Font Time;
     TTF_Font *gfont = NULL;
-    gfont = TTF_OpenFont( "VeraMoBd.ttf", 30 );
+    gfont = TTF_OpenFont( "font.ttf", 30 );
     SDL_Color textColor = { 255, 255, 255 };
-    string first= "Press any key to play";
-    font.loadFont( first, textColor ,gRenderer,gfont);
     Background.loadFromFile( "map1.PNG", gRenderer);
+    openning.loadFromFile("openning.PNG", gRenderer);
     defeat.loadFromFile("defeat.PNG",gRenderer);
     victory.loadFromFile("victory.PNG",gRenderer);
-    player.load("sprite_right.PNG",gRenderer);
-    player.setSpriteClip();
-    for(int i=0;i<numberOfbot;i++) bot[i].loadBot("ghost.PNG", gRenderer);
-    int alive = numberOfbot;
+    Bot bot[numberOfbot];
+    Font again;
+    string Again = "Press space to play again";
+    again.loadFont(Again,textColor,gRenderer,gfont);
     backgrmusic();
-    Background.render1( 0, 0 ,gRenderer);
-    font.renderText(70,310,gRenderer);
-    SDL_RenderPresent( gRenderer );
-    waitUntilKeyPressed();
-    int time = 200;
-    while( !quit )
-    {
-        while( SDL_PollEvent( &e ) != 0 )
-            {
-                if( e.type == SDL_QUIT )
-                {
-                    quit = true;
-                }
-                player.action(e, gRenderer);
-            }
-        SDL_SetRenderDrawColor( gRenderer, 0xFF, 0xFF, 0xFF, 0xFF );
-        SDL_RenderClear( gRenderer );
-        Background.render1( 0, 0 ,gRenderer);
-        string tmp = to_string(time);
-        Time.loadFont(tmp,textColor,gRenderer,gfont);
-        if(alive>0 && time>0){
-            player.render(gRenderer);
-            for(int i=0;i<numberOfbot;i++) bot[i].renderBot(gRenderer);
-            Time.renderText(10,0,gRenderer);
-            for(int i=0;i<numberOfbot;i++){
-                if( bot[i].check(player) ) {
-                    bot[i].free();
-                    effectmusic();
-                    alive--;
-                }
-            }
-            for(int i=0;i<numberOfbot;i++) bot[i].botmove();
-        }
-        else if (alive==0){
-            victory.render1(50,185,gRenderer);
-        }
-        else if(time<1){
-            defeat.render1(50,128,gRenderer);
-        }
+    bool run = true;
+    do{
+        Character player;
+        player.load("sprite_right.PNG",gRenderer);
+        int alive = numberOfbot;
+        for(int i=0;i<numberOfbot;i++) bot[i].loadBot("ghost.PNG", gRenderer);
+        player.setSpriteClip();
+        openning.render1( 0, 0 ,gRenderer);
         SDL_RenderPresent( gRenderer );
-        if(alive>0) time--;
-
+        waitUntilKeyPressed();
+        int time = 201;
+        bool quit = false;
+        while( !quit )
+        {
+            while( SDL_PollEvent( &e ) != 0 )
+                {
+                    if( e.type == SDL_QUIT )
+                    {
+                        quit = true;
+                        run = false;
+                    }
+                    player.action(e, gRenderer);
+                }
+            SDL_RenderClear( gRenderer );
+            Background.render1( 0, 0 ,gRenderer);
+            string tmp = to_string(time);
+            Time.loadFont(tmp,textColor,gRenderer,gfont);
+            for(int i=0;i<numberOfbot;i++) bot[i].botmove();
+            if(alive>0 && time>0){
+                player.render(gRenderer);
+                for(int i=0;i<numberOfbot;i++) bot[i].renderBot(gRenderer);
+                Time.renderText(10,0,gRenderer);
+                for(int i=0;i<numberOfbot;i++){
+                    if( bot[i].check(player) ) {
+                        bot[i].free();
+                        effectmusic();
+                        alive--;
+                    }
+                }
+            }
+            else if (alive==0){
+                victory.render1(50,185,gRenderer);
+                again.renderText(20 , 500 , gRenderer);
+                while( SDL_PollEvent( &e ) != 0 ){
+                    if( e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE )
+                    {
+                        player.free();
+                        quit = true;
+                        run = true;
+                    }
+                 }
+            }
+            else if(time<=0 && alive > 0 ){
+                defeat.render1(50,128,gRenderer);
+                again.renderText(20, 500 , gRenderer);
+                 while( SDL_PollEvent( &e ) != 0 ){
+                    if( e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_SPACE )
+                    {
+                        for(int i=0;i<numberOfbot;i++) bot[i].free();
+                        player.free();
+                        quit = true;
+                        run = true;
+                    }
+                 }
+            }
+            if(alive>0) time--;
+            SDL_RenderPresent( gRenderer );
+            SDL_Delay(50);
+        }
     }
+    while(run);
     close();
     return 0;
 }
-
-
-
-

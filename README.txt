@@ -12,6 +12,7 @@ Những việc đã làm được:
 5. Xuất hiện ma và tự động di chuyển.
 6. Va chạm giữa nhân vật và ma và ma bị tiêu diệt biến mất.
 7. Có thêm nhạc nền và kết thúc game.
+8. Có thể chơi được lại nhiều lần.
 
 
 Phần nhân vật có tham khảo qua video https://www.youtube.com/watch?v=mv3LJCB9JJM.

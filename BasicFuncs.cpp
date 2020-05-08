@@ -3,8 +3,6 @@
 #include "Character.h"
 using namespace std;
 
-
-
 bool LTexture::loadFromFile( std::string path, SDL_Renderer* gRenderer)
 {
 	//The final texture

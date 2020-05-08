@@ -38,7 +38,7 @@ bool Character::load(std::string path,SDL_Renderer* gRenderer){
 		else
 		{
 			//Get image dimensions
-			w_frame = loadedSurface->w/7;
+			w_frame = loadedSurface->w/3;
 			h_frame = loadedSurface->h;
 		}
 
