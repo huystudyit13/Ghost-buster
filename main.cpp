@@ -199,7 +199,7 @@ int main(int argc, char* argv[])
             }
             if(alive>0) time--;
             SDL_RenderPresent( gRenderer );
-            SDL_Delay(50);
+            SDL_Delay(20);
         }
     }
     while(run);
