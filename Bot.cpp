@@ -44,22 +44,22 @@ void Bot::renderBot(SDL_Renderer* gRenderer)
 void Bot::botmove(){
     int n = rand() % 4 ;
     if(n==0){
-        x+=40;
+        x+=bspeed;
         if(x>453) x=453;
     }
     else if(n==1){
-        x-=40;
+        x-=bspeed;
         if(x<0) x=0;
     }
     else if(n==2){
-        y-=40;
+        y-=bspeed;
         if(y<0) y=0;
     }
     else if(n==3){
-        y+=40;
+        y+=bspeed;
         if(y>661) y=661;
     }
-    SDL_Delay(20);
+
 }
 
 void Bot::free()
@@ -84,6 +84,7 @@ Bot::Bot()
 	mHeight = 0;
 	x=rand() % 453;
     y=rand() % 661;
+    bspeed = 40;
 }
 Bot::~Bot()
 {
@@ -92,15 +93,20 @@ Bot::~Bot()
 }
 
 bool Bot::check(Character player){
-    int leftA = x; int leftB=player.x_pos;
-    int rightA = x+mWidth; int rightB=player.x_pos+player.w_frame;
-    int topA = y; int topB=player.y_pos;
-    int bottomA= y + mHeight; int bottomB=player.y_pos+ player.h_frame;
+    int leftA = x;    int leftB=player.x_pos;
+    int rightA = x+mWidth;    int rightB=player.x_pos+player.w_frame;
+    int topA = y;     int topB=player.y_pos;
+    int bottomA= y + mHeight;      int bottomB=player.y_pos+ player.h_frame;
     if( (( bottomA <= topB ) || ( topA >= bottomB ) || ( rightA <= leftB ) || ( leftA >= rightB )) ==false  )
             {
                 //A collision is detected
                 return true;
             }
+    /*if(( bottomA >= topB ) && ( topA <= bottomB ) && ( rightA >= leftB ) && ( leftA <= rightB )  )
+            {
+                //A collision is detected
+                return true;
+            }*/
     return false;
 }
 

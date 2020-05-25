@@ -159,11 +159,14 @@ int main(int argc, char* argv[])
             Background.render1( 0, 0 ,gRenderer);
             string tmp = to_string(time);
             Time.loadFont(tmp,textColor,gRenderer,gfont);
-            for(int i=0;i<numberOfbot;i++) bot[i].botmove();
             if(alive>0 && time>0){
                 player.render(gRenderer);
-                for(int i=0;i<numberOfbot;i++) bot[i].renderBot(gRenderer);
                 Time.renderText(10,0,gRenderer);
+                for(int i=0;i<numberOfbot;i++) bot[i].renderBot(gRenderer);
+                for(int i=0;i<numberOfbot;i++) {
+                    bot[i].botmove();
+                    SDL_Delay(20);
+                }
                 for(int i=0;i<numberOfbot;i++){
                     if( bot[i].check(player) ) {
                         bot[i].free();
@@ -180,7 +183,6 @@ int main(int argc, char* argv[])
                     {
                         player.free();
                         quit = true;
-                        run = true;
                     }
                  }
             }
@@ -193,14 +195,13 @@ int main(int argc, char* argv[])
                         for(int i=0;i<numberOfbot;i++) bot[i].free();
                         player.free();
                         quit = true;
-                        run = true;
                     }
                  }
             }
             if(alive>0) time--;
-            SDL_Delay(30);
+            //SDL_Delay(30);
             SDL_RenderPresent( gRenderer );
-            SDL_Delay(20);
+            SDL_Delay(10);
         }
     }
     while(run);

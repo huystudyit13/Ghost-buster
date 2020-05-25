@@ -13,6 +13,7 @@ struct Bot
 		int mHeight;
 		int x;
 		int y;
+		int bspeed;
 		//Initializes variables
 		Bot();
 

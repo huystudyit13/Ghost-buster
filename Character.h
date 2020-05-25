@@ -8,6 +8,7 @@ struct Character{
     int y_pos;
     int w_frame;
     int h_frame;
+    int speed;
     SDL_Rect gSpriteClips[ ANIMATION_FRAMES ];
 
     Input input;
